@@ -1,0 +1,17 @@
+Build a To-Do List CRUD REST API in Python 3.10+ using FastAPI with in-memory storage.
+
+Requirements:
+1. Server: FastAPI with Uvicorn running on port 8000.
+2. In-memory data: List of dicts pre-filled with 3 tasks (id: int, title: str, done: bool).
+3. Error Response Format: ALL error responses MUST return a JSON object with key "error" instead of default FastAPI "detail" key (e.g. {"error": "Task 99 not found"}).
+4. Input Validation: Intercept Pydantic RequestValidationError and empty JSON body ({}) to return 400 Bad Request instead of 422 Unprocessable Entity.
+5. Endpoints:
+   - GET /: Returns {"name": "Task API", "version": "1.0", "endpoints": ["/tasks"]}
+   - GET /health: Returns {"status": "ok"}
+   - GET /tasks: Returns list of tasks with query params (done: bool, search: str, limit: int, offset: int).
+   - GET /tasks/{id}: Returns task by ID or 404 {"error": "Task {id} not found"}.
+   - POST /tasks: Accepts {"title": "..."}. Validates non-empty title, generates auto-increment ID, sets done=False, returns 201 Created + task. Missing/empty title -> 400 {"error": "..."}.
+   - PUT /tasks/{id}: Updates title/done. Unknown ID -> 404, empty payload or empty title -> 400.
+   - DELETE /tasks/{id}: Deletes task, returns 204 No Content with empty body. Unknown ID -> 404 {"error": "..."}.
+   - GET /stats: Returns {"total": N, "done": X, "open": Y}.
+   - POST /reset: Resets tasks back to seed data.

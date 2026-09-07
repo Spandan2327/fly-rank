@@ -1,0 +1,14 @@
+Build a To-Do List CRUD REST API in Python using FastAPI with in-memory storage.
+
+Requirements:
+1. Framework: FastAPI with Uvicorn server running on port 8000.
+2. In-memory data: Pre-fill with 3 tasks (id: int, title: str, done: bool).
+3. Endpoints:
+   - GET /: Returns JSON { "name": "Task API", "version": "1.0", "endpoints": ["/tasks"] }
+   - GET /health: Returns JSON { "status": "ok" }
+   - GET /tasks: Returns all tasks
+   - GET /tasks/{id}: Returns single task or 404 error { "error": "Task {id} not found" }
+   - POST /tasks: Accepts { "title": "..." }, generates next ID, sets done to false, returns 201 Created + new task. If title is missing or empty string, return 400 Bad Request { "error": "..." }
+   - PUT /tasks/{id}: Updates title and/or done status. Returns updated task. Unknown id -> 404, empty title/body -> 400.
+   - DELETE /tasks/{id}: Deletes task, returns 204 No Content with empty body. Unknown id -> 404.
+4. Documentation: Built-in Swagger UI accessible at /docs.

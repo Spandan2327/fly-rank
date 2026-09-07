@@ -1,0 +1,12 @@
+Build a secure Authentication and Protected Routes REST API in Python 3.10+ using FastAPI and Supabase Auth.
+
+Requirements:
+1. Provider: Use Supabase Auth for managing user accounts and signing/verifying JWTs. Load SUPABASE_URL and SUPABASE_KEY from .env.
+2. Endpoints:
+   - POST /auth/signup: Accepts {email, password}, validates missing fields -> 400, returns 201 Created + user object.
+   - POST /auth/login: Accepts {email, password}, validates fields -> 400, invalid credentials -> 401, returns 200 OK + access_token and refresh_token.
+   - POST /auth/logout: Protected route requiring Bearer token, revokes session, returns 204 No Content.
+   - GET /protected/profile: Protected route requiring Bearer token, verifies token via Supabase, returns 200 + user profile. Missing/invalid token -> 401.
+   - GET /public/info: Public open route, returns 200 OK {"message": "..."}.
+3. Reusable Guard: Implement a FastAPI dependency for extracting and verifying the Bearer token.
+4. OpenAPI: Configure HTTPBearer in FastAPI so Swagger UI at /docs displays the Authorize padlock.

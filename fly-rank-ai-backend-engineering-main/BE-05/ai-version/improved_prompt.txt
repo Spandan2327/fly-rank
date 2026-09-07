@@ -1,0 +1,9 @@
+Build a polite, production-grade web scraper in Python using httpx, BeautifulSoup4, and Pydantic.
+
+Requirements:
+1. Identifying User-Agent: Custom User-Agent header (FlyRankPoliteBot/1.0 (+https://github.com/...)).
+2. Strict robots.txt Parsing: Use urllib.robotparser.RobotFileParser to parse Disallow path rules and extract Crawl-delay for the bot's User-Agent.
+3. Domain Throttling & Retries: Track per-domain last request time and enforce delay. Use exponential backoff for 429 and 5xx errors.
+4. Comprehensive Boilerplate Cleaning: Decompose script, style, nav, footer, header, aside, form, iframe, svg, and noscript tags.
+5. Container Extraction: Extract main text from <article>, <main>, #content, or .post-body containers instead of body get_text().
+6. Data Schema & Storage: Validate output with Pydantic (ScrapedRecord: id, url, title, author, published_date, content, summary, tags, word_count, scraped_at). Export to corpus.jsonl and SQLite corpus.db.

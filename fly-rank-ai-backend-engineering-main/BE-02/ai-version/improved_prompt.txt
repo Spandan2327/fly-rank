@@ -1,0 +1,14 @@
+Migrate our FastAPI To-Do List CRUD API from in-memory storage to a SQLite database.
+
+Requirements:
+1. Database Connection: Separate SQLite connection management into database.py with get_db_connection().
+2. Idempotent Seeding: Check SELECT COUNT(*) FROM tasks. ONLY seed 3 initial tasks inside a transaction if count == 0. Do NOT use INSERT OR IGNORE with hardcoded IDs.
+3. Custom Error Interceptor: Implement custom exception handlers for HTTPException and Pydantic RequestValidationError so ALL error responses return {"error": "..."} format with status 400 for empty payloads and status 404 for unknown IDs.
+4. Endpoints & Query Filtering:
+   - GET /tasks: Supports SQL WHERE done = ?, title LIKE %, ORDER BY id ASC, LIMIT and OFFSET.
+   - GET /tasks/{id}: Parameterized SELECT * FROM tasks WHERE id = ?.
+   - POST /tasks: Validates non-empty title, parameterized INSERT INTO tasks (title, done) VALUES (?, ?), returns 201 Created + task.
+   - PUT /tasks/{id}: Parameterized UPDATE tasks SET title = ?, done = ? WHERE id = ?.
+   - DELETE /tasks/{id}: Parameterized DELETE FROM tasks WHERE id = ?, returns 204 No Content.
+   - GET /stats: SQL SELECT COUNT(*) total, SUM(...) done, SUM(...) open.
+   - POST /reset: Clears table and re-seeds seed tasks.

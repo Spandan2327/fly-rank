@@ -1,0 +1,7 @@
+Build a polite web scraper in Python using httpx and BeautifulSoup that extracts clean text records for a RAG corpus.
+
+Requirements:
+1. Politeness: Identify with a custom User-Agent, check robots.txt before fetching, and enforce a delay between requests.
+2. Boilerplate Cleaning: Remove script tags, style tags, and nav elements from the HTML before extracting text.
+3. Structured Fields: Extract title, main content text, word count, and URL.
+4. Output: Save records into a JSONL file.

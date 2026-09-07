@@ -1,0 +1,14 @@
+Migrate our existing FastAPI To-Do List CRUD API from in-memory storage to a SQLite database.
+
+Requirements:
+1. Database: SQLite database named tasks.db. Automatically create table tasks if it does not exist (columns: id INTEGER PRIMARY KEY AUTOINCREMENT, title TEXT NOT NULL, done INTEGER NOT NULL DEFAULT 0).
+2. Seeding: Insert 3 default example tasks ("Buy groceries", "Read FastAPI documentation", "Build CRUD API assignment") ONLY if the table is empty.
+3. Endpoints: Keep identical external endpoint contract and response format:
+   - GET /: Returns JSON { "name": "Task Database API", "version": "2.0", "storage": "SQLite (tasks.db)", "endpoints": ["/tasks"] }
+   - GET /health: Returns JSON { "status": "ok" }
+   - GET /tasks: Returns all tasks from SQLite.
+   - GET /tasks/{id}: Returns single task or 404 error { "error": "Task {id} not found" }.
+   - POST /tasks: Accepts { "title": "..." }, validates non-empty title, inserts into SQLite, returns 201 Created + task object. Invalid/missing title -> 400 Bad Request { "error": "..." }.
+   - PUT /tasks/{id}: Updates title/done in SQLite. Unknown id -> 404, invalid body -> 400.
+   - DELETE /tasks/{id}: Deletes task from SQLite, returns 204 No Content. Unknown id -> 404.
+4. Security: Use parameterized SQL queries for all database operations to prevent SQL injection.

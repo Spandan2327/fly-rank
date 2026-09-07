@@ -1,0 +1,9 @@
+Containerize our FastAPI To-Do List CRUD API using PostgreSQL in Docker Compose.
+
+Requirements:
+1. Database: PostgreSQL container in docker compose with POSTGRES_PASSWORD and POSTGRES_DB loaded from .env file.
+2. Persistence: Use a named volume taskdata so database rows survive restarts.
+3. Seeding: Insert 3 default example tasks ("Buy groceries", "Read FastAPI documentation", "Build CRUD API assignment") ONLY if the tasks table is empty.
+4. Endpoints: Keep identical external HTTP API contract (GET /, GET /health, GET /tasks, GET /tasks/{id}, POST /tasks, PUT /tasks/{id}, DELETE /tasks/{id}).
+5. Security: Parameterized SQL queries (%s) with psycopg2 and no hardcoded credentials in source code.
+6. One-Command Startup: Single docker compose up starts both api and db services.

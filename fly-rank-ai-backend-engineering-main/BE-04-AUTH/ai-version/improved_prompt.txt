@@ -1,0 +1,17 @@
+Build a secure Authentication and Protected Routes API using FastAPI and Supabase Auth.
+
+Requirements:
+1. Environment & Config: Load SUPABASE_URL and SUPABASE_KEY from .env using python-dotenv. Never hardcode fallback credentials in source code.
+2. Security Scheme & Swagger UI: Use FastAPI's HTTPBearer security scheme (HTTPBearer(auto_error=False)) and Security() in dependencies so /docs renders the Authorize bearer padlock.
+3. Token Verification Dependency:
+   - Extract credentials using HTTPAuthorizationCredentials.
+   - If missing/empty -> return 401 Unauthorized {"error": "Access token required"}.
+   - Catch Supabase Auth exceptions during get_user(token) and return 401 Unauthorized {"error": "Invalid or expired token"} instead of uncaught 500 errors.
+4. Error Response Format: Intercept RequestValidationError and HTTPException so ALL error responses return a JSON object with key "error" (e.g. {"error": "..."}).
+5. Endpoints:
+   - POST /auth/signup: 201 Created on success, 400 Bad Request on missing fields.
+   - POST /auth/login: 200 OK with access_token & refresh_token, 401 Unauthorized on bad credentials.
+   - POST /auth/logout: Protected route (204 No Content).
+   - GET /protected/profile: Protected route (200 OK + user metadata).
+   - GET /protected/dashboard: Protected route demonstrating reusable auth guard.
+   - GET /public/info: Open public route (200 OK).

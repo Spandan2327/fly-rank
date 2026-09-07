@@ -1,0 +1,17 @@
+Containerize a FastAPI To-Do List CRUD API with PostgreSQL and Docker Compose.
+
+Requirements:
+1. Docker Compose Setup: Define api and db services in compose.yaml.
+   - db service: postgres:16-alpine image, POSTGRES_PASSWORD=dev, POSTGRES_DB=tasks, volume taskdata:/var/lib/postgresql/data, pg_isready healthcheck.
+   - api service: Dockerfile build, ports ["8000:8000"], environment DATABASE_URL=postgresql://postgres:dev@db:5432/tasks, depends_on db with condition: service_healthy.
+2. Connection & Secrets: Load DATABASE_URL from .env using python-dotenv. Connect to service name 'db' inside docker network, and 'localhost' for local testing.
+3. Database Initialization & Seeding: In database.py, execute SELECT COUNT(*) FROM tasks. ONLY seed 3 initial tasks inside a transaction if count == 0.
+4. Error Interception: Custom exception handlers for HTTPException and RequestValidationError returning {"error": "..."} format with 400 for empty payloads and 404 for missing IDs.
+5. Endpoints & Query Filtering:
+   - GET /tasks: Supports ILIKE search, done filtering, ORDER BY id ASC, LIMIT/OFFSET.
+   - GET /tasks/{id}: Parameterized SELECT * FROM tasks WHERE id = %s.
+   - POST /tasks: Validates non-empty title, parameterized INSERT INTO tasks (title, done) VALUES (%s, %s) RETURNING *, returns 201 Created.
+   - PUT /tasks/{id}: Parameterized UPDATE tasks SET title = %s, done = %s WHERE id = %s RETURNING *.
+   - DELETE /tasks/{id}: Parameterized DELETE FROM tasks WHERE id = %s, returns 204 No Content.
+   - GET /stats: SQL SELECT COUNT(*) total, SUM(...) done, SUM(...) open.
+   - POST /reset: TRUNCATE tasks RESTART IDENTITY and re-seed.
